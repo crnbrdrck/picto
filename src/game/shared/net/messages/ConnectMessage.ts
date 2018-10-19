@@ -1,25 +1,21 @@
-import {MessageContainer} from "./../messageContainer"
-import {MessageType} from "./../messageType"
+import { MessageContainer } from './../messageContainer'
+import { MessageType } from './../messageType'
 
+export class ConnectMessage extends MessageContainer{
 
-export class ConnectMessage extends MessageContainer
-{
-    private nickname: string
+  public static create(nickname : string) {
+    const msg = new ConnectMessage()
+    msg.nickname = nickname
+    return msg
+  }
 
-    constructor()
-    {
-        super(MessageType.Connect)
-    }
+  private nickname : string
 
-    static create(nickname: string)
-    {
-        let msg = new ConnectMessage()
-        msg.nickname = nickname
-        return msg;
-    }
+  constructor() {
+    super(MessageType.Connect)
+  }
 
-    getNickname() : string
-    {
-        return this.nickname;
-    }
+  public getNickname() : string {
+    return this.nickname
+  }
 }

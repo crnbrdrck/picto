@@ -1,27 +1,23 @@
-import {MessageContainer} from "./../messageContainer"
-import {MessageType} from "./../messageType"
+import { MessageContainer } from './../messageContainer'
+import { MessageType } from './../messageType'
 
 /**
  * An accouncement sent from server to client
  */
-export class AnnounceMessage extends MessageContainer
-{
-    private announcement_text: string
+export class AnnounceMessage extends MessageContainer {
 
-    constructor()
-    {
-        super(MessageType.Announcement)
-    }
+  public static create(announcementText : string) {
+    const msg = new AnnounceMessage()
+    msg.announcementText = announcementText
+    return msg
+  }
+  private announcementText : string
 
-    static create(announcement_text: string)
-    {
-        let msg = new AnnounceMessage()
-        msg.announcement_text = announcement_text
-        return msg;
-    }
+  constructor() {
+    super(MessageType.Announcement)
+  }
 
-    getAnnounceText() : string
-    {
-        return this.announcement_text;
-    }
+  public getAnnounceText() : string {
+    return this.announcementText
+  }
 }
