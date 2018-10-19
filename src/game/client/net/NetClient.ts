@@ -1,52 +1,42 @@
+import { MessageContainer } from "../../shared/net/MessageContainer"
+import { MessageHandlerArray } from "../../shared/net/MessageHandlerArray"
+import { AnnounceMessage } from "../../shared/net/messages/AnnounceMessage"
+import { MessageType } from "../../shared/net/MessageType"
+import { TransferChannel } from "../../shared/net/TransferChannel"
 
-import {TransferChannel} from "../../shared/net/TransferChannel"
-import { MessageHandlerArray } from "../../shared/net/MessageHandlerArray";
-import { MessageType } from "../../shared/net/MessageType";
-import { MessageContainer } from "../../shared/net/MessageContainer";
-import { AnnounceMessage } from "../../shared/net/messages/AnnounceMessage";
+export class NetClient {
 
-export class NetClient
-{
-    private chl:TransferChannel
-    
-    private handlers : MessageHandlerArray;
+  private chl : TransferChannel
+  private handlers : MessageHandlerArray
 
-    /**
-     * Connect to a remote server
-     * @param remote_addr 
-     */
-    constructor(remote_addr:string)
-    {
-        this.chl = TransferChannel.fromRemoteAddr(remote_addr);
+  /**
+   * Connect to a remote server
+   * @param remoteAddr
+   */
+  constructor(remoteAddr : string) {
+    this.chl = TransferChannel.fromRemoteAddr(remoteAddr);
 
-        // Our message handlers, all message logic will go through this
-        this.handlers = new MessageHandlerArray()
+    // Our message handlers, all message logic will go through this
+    this.handlers = new MessageHandlerArray()
 
-        // tell the channel to use these handlers
-        this.chl.setCallbackArray(this.handlers) 
+    // tell the channel to use these handlers
+    this.chl.setCallbackArray(this.handlers)
 
-        // add message handlers
-        this.logic()
-    }
+    // add message handlers
+    this.logic()
+  }
 
-    isConnected() : boolean
-    {
-        return this.chl.isConnected();
-    }
+  public isConnected() : boolean {
+    return this.chl.isConnected();
+  }
 
-    logic()
-    {
-        // when we receive an announcement
-        this.handlers.subscribe(MessageType.Announcement,
-            function(chl:TransferChannel, msg:MessageContainer)
-            {
-                let msg_casted : AnnounceMessage = <AnnounceMessage>msg;
+  public logic() {
+    // when we receive an announcement
+    this.handlers.subscribe(MessageType.Announcement, (chl : TransferChannel, msg : MessageContainer) => {
+      const msgCasted : AnnounceMessage = msg as AnnounceMessage;
 
-                // print it to console
-                console.log("We got an announcement: " + msg_casted.getAnnounceText())
-            }
-        )
-    }
-
-    
+      // print it to console
+      console.log(`We got an announcement: ${msgCasted.getAnnounceText()}`)
+    })
+  }
 }
