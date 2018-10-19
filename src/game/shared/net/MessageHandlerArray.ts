@@ -1,0 +1,54 @@
+
+
+import {MessageType} from "./MessageType"
+import {TransferChannel} from "./TransferChannel"
+import {MessageContainer} from "./MessageContainer"
+
+/**
+ * A handler array is a list of registered callbacks for a set of message types
+ */
+export class MessageHandlerArray
+{
+    /**
+     * An array (indexed by messagetype) of array of callbacks
+     */
+    private subscribers:Array< Array<(chl:TransferChannel, msg: MessageContainer) => void>>
+
+    constructor()
+    {
+        this.subscribers = []
+    }
+
+    /**
+     * Subscribe to an incoming net message
+     * @param func 
+     */
+    subscribe(type: MessageType, func: (chl:TransferChannel,msg: MessageContainer) => void) : void
+    {
+        // add the new callback to the subscribers array
+
+        // create the array if it hasnt existed yet
+        if(typeof this.subscribers[type] === 'undefined') this.subscribers[type] = [];
+
+        this.subscribers[type].push(func);
+    }
+
+    /**
+     * Push a message to the subscribers by calling their callbacks if they registered for the message tpye
+     * @param message 
+     */
+    dispatchMessage(chl:TransferChannel, message:MessageContainer)
+    {
+        // for each subscriber who want to get this type of message
+
+        if(!(message.getType() in this.subscribers)) return;
+
+        for(let subscriber of this.subscribers[message.getType()])
+        {
+            // we pass the MessageContainer to the subscriber callback
+            // they are expected to cast it to their own type
+            subscriber(chl,message);
+        }
+    }
+
+}
