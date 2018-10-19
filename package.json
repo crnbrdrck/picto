@@ -27,7 +27,9 @@
   "dependencies": {
     "@types/ws": "^6.0.1",
     "detect-node": "^2.0.4",
+    "es6-shim": "^0.35.3",
     "isomorphic-ws": "^4.0.1",
+    "reflect-metadata": "^0.1.12",
     "ws": "^6.1.0"
   }
 }

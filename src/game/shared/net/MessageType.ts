@@ -2,7 +2,8 @@
 export enum MessageType
 {
     Connect,
+    Announcement,
     SendPictoToServer,
     SendPictoToClient,
-    Null // bad messag
+    Null // bad message
 }

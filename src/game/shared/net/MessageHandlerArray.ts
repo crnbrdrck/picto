@@ -5,7 +5,8 @@ import {TransferChannel} from "./TransferChannel"
 import {MessageContainer} from "./MessageContainer"
 
 /**
- * A handler array is a list of registered callbacks for a set of message types
+ * A handler array is a list of
+ * registered callbacks for a set of net messages
  */
 export class MessageHandlerArray
 {
@@ -34,20 +35,20 @@ export class MessageHandlerArray
     }
 
     /**
-     * Push a message to the subscribers by calling their callbacks if they registered for the message tpye
+     * Push a message to the subscribers by calling their callbacks if they registered for the message type
      * @param message 
      */
     dispatchMessage(chl:TransferChannel, message:MessageContainer)
     {
-        // for each subscriber who want to get this type of message
-
+        // check if there any subscribers for this message
         if(!(message.getType() in this.subscribers)) return;
 
+        // for each subscriber who want to get this type of message
         for(let subscriber of this.subscribers[message.getType()])
         {
             // we pass the MessageContainer to the subscriber callback
             // they are expected to cast it to their own type
-            subscriber(chl,message);
+            subscriber(chl, message);
         }
     }
 

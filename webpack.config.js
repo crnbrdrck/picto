@@ -27,6 +27,7 @@ const server_dev =
 
     output: 
     {
+        libraryTarget: "umd",
         filename: 'server.js',
         path: path.resolve(__dirname, 'build/')
     }
@@ -59,6 +60,7 @@ const client_dev =
 
     output: 
     {
+        libraryTarget: "umd",
         filename: 'client.js',
         path: path.resolve(__dirname, 'build/static')
     },

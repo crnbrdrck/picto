@@ -4,6 +4,9 @@ const WebSocket = require("isomorphic-ws")
 import {MessageType} from "./MessageType"
 import {MessageContainer} from "./MessageContainer"
 import {MessageHandlerArray} from "./MessageHandlerArray"
+
+import {BuildMessageFromJSON, BuildJSONFromMessage } from "./MessageFactories"
+
 import {Log} from "../../shared/Log"
 
 /**
@@ -32,12 +35,9 @@ export class TransferChannel
      */
     subscribe(type: MessageType, func: (chl:TransferChannel,msg: MessageContainer) => void) : void
     {
-        // add the new callback to the subscribers array
-
-        // create the array if it hasnt existed yet
         this.subscribers.subscribe(type,func);
     }
-
+ 
     /**
      * Set the callbacks/subscribers of a TransferChannel
      * Use this if you want to set the same callbacks on many TransferChannels (i.e clients)
@@ -56,7 +56,9 @@ export class TransferChannel
     {
         let ret: TransferChannel = new TransferChannel();
         ret.ws = new WebSocket(remote_addr)
-        ret.addListeners();
+
+        // add webso
+        ret.addWSEventHandlers();
         return ret;
     }
 
@@ -69,7 +71,7 @@ export class TransferChannel
     {
         let ret: TransferChannel = new TransferChannel();
         ret.ws = ws;
-        ret.addListeners();
+        ret.addWSEventHandlers();
         return ret;
     }
 
@@ -90,20 +92,20 @@ export class TransferChannel
     {
         if(!this.isConnected()){ return }
 
-        this.ws.send(msg.toJSON());
+        this.ws.send(BuildJSONFromMessage(msg));
     }
 
     /**
      * Sets up WS event handling
      */
-    private addListeners()
+    private addWSEventHandlers()
     {
         var self = this
         this.ws.addEventListener("message", (ev: MessageEvent) => 
         {
             // call onRecieve when we recieve strings
             // onRecieveData calls callbacks that have been registered
-            self.onRecieveData(ev.data);
+            self.onReceiveData(ev.data);
         });
     }
 
@@ -111,19 +113,23 @@ export class TransferChannel
      * Called when we recieve data down the channel
      * This calls all the functions subscribed to the channel
      */
-    private onRecieveData(str:string) : void
+    private onReceiveData(str:string) : void
     {
         // assume every string we are sent is a serialized message
-        try
-        {
-            let message = MessageContainer.fromJSON(str);
-            this.subscribers.dispatchMessage(this,message);
-        }
-        catch(err) // catch malformed JSON
-        {
-            
-            Log(err.message);
-        }
+        let self = this
+
+        BuildMessageFromJSON(str).then(
+            (message_container: MessageContainer) =>
+            {
+                self.subscribers.dispatchMessage(self,message_container)
+            }
+        )
+        .catch(
+            (err) =>
+            {
+                Log(err.message);
+            }
+        )
     
     }
 

@@ -5,6 +5,7 @@ import {MessageType}            from "../../shared/net/MessageType";
 import {MessageContainer}       from "../../shared/net/MessageContainer"
 
 import {ConnectMessage}         from "../../shared/net/messages/ConnectMessage"
+import {AnnounceMessage}         from "../../shared/net/messages/AnnounceMessage"
 
 import {Log} from "../Log"
 
@@ -46,6 +47,9 @@ export class NetServer
         // tell transfer channel to use our message handlers
         channel.setCallbackArray(this.handlers)
 
+        // send them an announcement <3
+        channel.sendMessage(AnnounceMessage.create("Welcome to Picto!"));
+
         // preserve connection
         this.connections.push(TransferChannel.fromWebSocket(ws))
     }
@@ -64,14 +68,17 @@ export class NetServer
         },2000)
 
         // When someone tries to connect
-        this.handlers.subscribe(MessageType.Connect,
-            function(chl : TransferChannel, msg: MessageContainer)
-            {
-                let msg_casted : ConnectMessage = <ConnectMessage>msg;
+        // this.handlers.subscribe(MessageType.Connect,
+        //     function(channel : TransferChannel, msg: MessageContainer)
+        //     {
+        //         let msg_casted : ConnectMessage = <ConnectMessage>msg
                 
-                Log("New connect message, nickname: " + msg_casted.getNickname());
-            }
-        )
+        //         Log("New connect message, nickname: " + msg_casted.getNickname());
+
+        //         let response : AnnounceMessage = AnnounceMessage.create("Go NetSoc!")
+        //         channel.sendMessage(response)
+        //     }
+        // )
     }
 }
  
