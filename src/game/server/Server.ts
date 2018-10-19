@@ -1,6 +1,6 @@
-import {IEntryPoint} from "../shared/IEntryPoint"
-import {Log} from './Log'
-import {NetServer} from "./net/NetServer"
+import {IEntryPoint} from "../shared/entryPoint"
+import {Log} from './log'
+import {NetServer} from "./net/netServer"
 
 class Server implements IEntryPoint {
   private net : NetServer

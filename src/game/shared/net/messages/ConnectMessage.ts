@@ -1,6 +1,5 @@
-
-import {MessageContainer} from "./../MessageContainer"
-import {MessageType} from "./../MessageType"
+import {MessageContainer} from "./../messageContainer"
+import {MessageType} from "./../messageType"
 
 
 export class ConnectMessage extends MessageContainer

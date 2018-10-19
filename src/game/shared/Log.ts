@@ -1,7 +1,6 @@
-
-import {IS_CLIENT, IS_SERVER} from "./Shared"
-import {Log as LogCL} from "../client/Log"
-import {Log as LogSV} from "../server/Log"
+import {IS_CLIENT, IS_SERVER} from "./shared"
+import {Log as LogCL} from "../client/log"
+import {Log as LogSV} from "../server/log"
 
 export function Log(...args: any[])
 {

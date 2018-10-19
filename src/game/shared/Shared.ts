@@ -1,5 +1,5 @@
 
-const isNode = require("detect-node")
+import {isNode} from 'detect-node'
 
 /**
  * If this variable is true, we are on the client

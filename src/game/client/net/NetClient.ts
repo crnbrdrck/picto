@@ -1,8 +1,8 @@
-import { MessageContainer } from "../../shared/net/MessageContainer"
-import { MessageHandlerArray } from "../../shared/net/MessageHandlerArray"
-import { AnnounceMessage } from "../../shared/net/messages/AnnounceMessage"
-import { MessageType } from "../../shared/net/MessageType"
-import { TransferChannel } from "../../shared/net/TransferChannel"
+import { MessageContainer } from "../../shared/net/messageContainer"
+import { MessageHandlerArray } from "../../shared/net/messageHandlerArray"
+import { AnnounceMessage } from "../../shared/net/messages/announceMessage"
+import { MessageType } from "../../shared/net/messageType"
+import { TransferChannel } from "../../shared/net/transferChannel"
 
 export class NetClient {
 

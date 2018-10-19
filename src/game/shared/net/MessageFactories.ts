@@ -1,9 +1,7 @@
-
-import { MessageContainer } from "./MessageContainer"
-import { ConnectMessage }   from "./messages/ConnectMessage";
-import { AnnounceMessage }  from "./messages/AnnounceMessage"
-
-import { MessageType }      from "./MessageType"
+import { MessageContainer } from "./messageContainer"
+import { ConnectMessage }   from "./messages/connectMessage";
+import { AnnounceMessage }  from "./messages/announceMessage"
+import { MessageType }      from "./messageType"
 
 var MessageFactories : Array<(...args: any[]) => any> = []
 MessageFactories[MessageType.Connect]       = () : ConnectMessage  => { return new ConnectMessage()  }
@@ -11,7 +9,7 @@ MessageFactories[MessageType.Announcement]  = () : AnnounceMessage => { return n
 
 /**
  * Returns a factory func for the specified type
- * @param type 
+ * @param type
  */
 function getMessageFactory(type: MessageType) : Promise<(...args: any[]) => any>
 {
@@ -28,7 +26,7 @@ function getMessageFactory(type: MessageType) : Promise<(...args: any[]) => any>
 
 /**
  * Builds a message from JSON, checks the type and finds it's factory
- * @param json 
+ * @param json
  * @throws TypeError When malformed JSON is sent that is not a serialized net-message
  */
 export function BuildMessageFromJSON(json : string) : Promise<MessageContainer>
@@ -44,7 +42,7 @@ export function BuildMessageFromJSON(json : string) : Promise<MessageContainer>
 
         // in order to receive the correct function prototypes
         // we need to construct an object of the same type as it was before it was turned into JSON
-        // hence each MessageType needs a factory 
+        // hence each MessageType needs a factory
         getMessageFactory(deserialized._message_type).then(
             (factory) =>
             {
@@ -52,11 +50,11 @@ export function BuildMessageFromJSON(json : string) : Promise<MessageContainer>
 
                 // copy each variable over
                 // TODO: consider deep copies
-                for (var prop in deserialized) 
+                for (var prop in deserialized)
                 {
                     new_container[prop] = deserialized[prop]
                 }
-                
+
                 resolve(new_container)
             })
         .catch(
@@ -64,7 +62,7 @@ export function BuildMessageFromJSON(json : string) : Promise<MessageContainer>
             {
                 reject(err)
             }
-        )  
+        )
     })
 }
 

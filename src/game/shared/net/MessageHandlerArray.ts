@@ -1,8 +1,6 @@
-
-
-import {MessageType} from "./MessageType"
-import {TransferChannel} from "./TransferChannel"
-import {MessageContainer} from "./MessageContainer"
+import {MessageType} from "./messageType"
+import {TransferChannel} from "./transferChannel"
+import {MessageContainer} from "./messageContainer"
 
 /**
  * A handler array is a list of
@@ -22,7 +20,7 @@ export class MessageHandlerArray
 
     /**
      * Subscribe to an incoming net message
-     * @param func 
+     * @param func
      */
     subscribe(type: MessageType, func: (chl:TransferChannel,msg: MessageContainer) => void) : void
     {
@@ -36,7 +34,7 @@ export class MessageHandlerArray
 
     /**
      * Push a message to the subscribers by calling their callbacks if they registered for the message type
-     * @param message 
+     * @param message
      */
     dispatchMessage(chl:TransferChannel, message:MessageContainer)
     {

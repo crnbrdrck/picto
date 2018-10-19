@@ -1,13 +1,12 @@
+import {WebSocket} from "isomorphic-ws"
 
-const WebSocket = require("isomorphic-ws")
+import {MessageType} from "./messageType"
+import {MessageContainer} from "./messageContainer"
+import {MessageHandlerArray} from "./messageHandlerArray"
 
-import {MessageType} from "./MessageType"
-import {MessageContainer} from "./MessageContainer"
-import {MessageHandlerArray} from "./MessageHandlerArray"
+import {BuildMessageFromJSON, BuildJSONFromMessage } from "./messageFactories"
 
-import {BuildMessageFromJSON, BuildJSONFromMessage } from "./MessageFactories"
-
-import {Log} from "../../shared/Log"
+import {Log} from "../../shared/log"
 
 /**
  * A websocket transfer channel wraps a websocket
@@ -31,13 +30,13 @@ export class TransferChannel
 
     /**
      * Subscribe to an incoming net message
-     * @param func 
+     * @param func
      */
     subscribe(type: MessageType, func: (chl:TransferChannel,msg: MessageContainer) => void) : void
     {
         this.subscribers.subscribe(type,func);
     }
- 
+
     /**
      * Set the callbacks/subscribers of a TransferChannel
      * Use this if you want to set the same callbacks on many TransferChannels (i.e clients)
@@ -50,7 +49,7 @@ export class TransferChannel
 
     /**
      * Create the transfer channel by connecting to a remote server
-     * @param remote_addr The websocket connection string of the server 
+     * @param remote_addr The websocket connection string of the server
      */
     static fromRemoteAddr(remote_addr: string) : TransferChannel
     {
@@ -65,7 +64,7 @@ export class TransferChannel
     /**
      * Create the transfer channel from an existing websocket
      * Use this when a client connects to you (if you're on the server)
-     * @param ws 
+     * @param ws
      */
     static fromWebSocket(ws : WebSocket) : TransferChannel
     {
@@ -86,7 +85,7 @@ export class TransferChannel
 
     /**
      * Send a message down the channel (if we are connected)
-     * @param str 
+     * @param str
      */
     sendMessage(msg: MessageContainer) : void
     {
@@ -101,7 +100,7 @@ export class TransferChannel
     private addWSEventHandlers()
     {
         var self = this
-        this.ws.addEventListener("message", (ev: MessageEvent) => 
+        this.ws.addEventListener("message", (ev: MessageEvent) =>
         {
             // call onRecieve when we recieve strings
             // onRecieveData calls callbacks that have been registered
@@ -130,7 +129,7 @@ export class TransferChannel
                 Log(err.message);
             }
         )
-    
+
     }
 
 }

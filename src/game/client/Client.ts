@@ -1,8 +1,7 @@
+import {IEntryPoint} from "game/shared/entryPoint"
+import {Log} from './log'
 
-import {IEntryPoint} from "game/shared/IEntryPoint"
-import {Log} from './Log'
-
-import {NetClient} from "./net/NetClient"
+import {NetClient} from "./net/netClient"
 
 class Client implements IEntryPoint {
   private net : NetClient

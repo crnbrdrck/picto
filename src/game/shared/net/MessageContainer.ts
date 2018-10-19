@@ -1,11 +1,10 @@
-
-import { MessageType } from "./MessageType";
+import { MessageType } from "./messageType";
 
 /**
  * A message that can be passed between client and server
  * See message implementations for the actual messages
- * 
- * Do not create instances of this class. 
+ *
+ * Do not create instances of this class.
  */
 export class MessageContainer
 {
