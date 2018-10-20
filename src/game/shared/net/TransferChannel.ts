@@ -1,11 +1,7 @@
-import { WebSocket } from 'isomorphic-ws'
-
 import { MessageContainer } from './messageContainer'
 import { MessageHandlerArray } from './messageHandlerArray'
 import { MessageType } from './messageType'
-
 import { BuildJSONFromMessage, BuildMessageFromJSON } from './messageFactories'
-
 import { log } from '../../shared/log'
 
 /**

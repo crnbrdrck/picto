@@ -1,4 +1,4 @@
-import { Server, WebSocket } from 'isomorphic-ws'
+import { Server } from 'isomorphic-ws'
 import { MessageContainer } from '../../shared/net/messageContainer'
 import { MessageHandlerArray } from '../../shared/net/messageHandlerArray'
 import { AnnounceMessage } from '../../shared/net/messages/announceMessage'

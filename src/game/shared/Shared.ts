@@ -1,4 +1,4 @@
-import { isNode } from 'detect-node'
+const isNode : boolean = Object.prototype.toString.call(typeof process !== 'undefined' ? process : 0) === '[object process]'
 
 /**
  * If this variable is true, we are on the client
