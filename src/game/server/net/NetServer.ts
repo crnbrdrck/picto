@@ -1,84 +1,72 @@
+import { Server } from 'isomorphic-ws'
+import { MessageContainer } from '../../shared/net/messageContainer'
+import { MessageHandlerArray } from '../../shared/net/messageHandlerArray'
+import { AnnounceMessage } from '../../shared/net/messages/announceMessage'
+import { ConnectMessage } from '../../shared/net/messages/connectMessage'
+import { MessageType } from '../../shared/net/messageType'
+import { TransferChannel } from '../../shared/net/transferChannel'
+import { log } from '../log'
 
-import {TransferChannel}        from "../../shared/net/TransferChannel";
-import {MessageHandlerArray}    from "../../shared/net/MessageHandlerArray";
-import {MessageType}            from "../../shared/net/MessageType";
-import {MessageContainer}       from "../../shared/net/MessageContainer"
+export class NetServer {
+  private connections : TransferChannel[]
+  private handlers : MessageHandlerArray
+  private wss : Server
 
-import {ConnectMessage}         from "../../shared/net/messages/ConnectMessage"
-import {AnnounceMessage}         from "../../shared/net/messages/AnnounceMessage"
+  constructor(port : number) {
+    this.wss = new Server({ port })
 
-import {Log} from "../Log"
+    this.connections = []
 
-const ws = require("isomorphic-ws")
+    // avoid scope issues
+    const self = this
+    this.wss.on('connection', (ws : WebSocket) => { self.onConnection(ws) })
 
-export class NetServer
-{
-    private wss : any
-    private connections : Array<TransferChannel>
-    
-    private handlers: MessageHandlerArray;
+    // Our message handlers, all message logic will go through this
+    this.handlers = new MessageHandlerArray()
 
-    constructor(port: number)
-    {
-        this.wss = new ws.Server({ port: port });
+    // add message handlers
+    this.logic()
+  }
 
-        this.connections = []
-        
-        // avoid scope issues
-        let self = this
-        this.wss.on("connection", (ws: WebSocket) => { self.onConnection(ws) });
+  /**
+   * Called by ws server, when a new connection is made, we create a TransferChannel
+   * set up our handlers and push them into the list of connections
+   * @param ws
+   */
+  private onConnection(ws : WebSocket) {
+    const channel = TransferChannel.fromWebSocket(ws)
 
-        // Our message handlers, all message logic will go through this
-        this.handlers = new MessageHandlerArray()
-        
-        // add message handlers
-        this.logic()
-    }
+    // tell transfer channel to use our message handlers
+    channel.setCallbackArray(this.handlers)
 
-    /**
-     * Called by ws server, when a new connection is made, we create a TransferChannel
-     * set up our handlers and push them into the list of connections
-     * @param ws 
-     */
-    private onConnection(ws : WebSocket) : void
-    {
-        let channel = TransferChannel.fromWebSocket(ws);
+    // send them an announcement <3
+    channel.sendMessage(AnnounceMessage.create('Welcome to Picto!'))
 
-        // tell transfer channel to use our message handlers
-        channel.setCallbackArray(this.handlers)
+    // preserve connection
+    this.connections.push(TransferChannel.fromWebSocket(ws))
+  }
 
-        // send them an announcement <3
-        channel.sendMessage(AnnounceMessage.create("Welcome to Picto!"));
+  private logic() {
+    // purge closed connections
+    setInterval(() => {
+      for (const index in this.connections) {
+        if (!this.connections[index].isConnected()) {
+          this.connections.splice(parseInt(index, 1), 1)
+        }
+      }
+    }, 2000)
 
-        // preserve connection
-        this.connections.push(TransferChannel.fromWebSocket(ws))
-    }
+    // When someone tries to connect
+    // this.handlers.subscribe(MessageType.Connect,
+    //     function(channel : TransferChannel, msg: MessageContainer)
+    //     {
+    //         let msg_casted : ConnectMessage = <ConnectMessage>msg
 
-    private logic()
-    {
-        // purge closed connections
-        setInterval(() => {
-            for(let index in this.connections)
-            {
-                if(!this.connections[index].isConnected()) 
-                {
-                    this.connections.splice(parseInt(index),1)
-                }
-            }
-        },2000)
+      //         log("New connect message, nickname: " + msg_casted.getNickname());
 
-        // When someone tries to connect
-        // this.handlers.subscribe(MessageType.Connect,
-        //     function(channel : TransferChannel, msg: MessageContainer)
-        //     {
-        //         let msg_casted : ConnectMessage = <ConnectMessage>msg
-                
-        //         Log("New connect message, nickname: " + msg_casted.getNickname());
-
-        //         let response : AnnounceMessage = AnnounceMessage.create("Go NetSoc!")
-        //         channel.sendMessage(response)
-        //     }
-        // )
-    }
+      //         let response : AnnounceMessage = AnnounceMessage.create("Go NetSoc!")
+      //         channel.sendMessage(response)
+      //     }
+      // )
+  }
 }
- 
