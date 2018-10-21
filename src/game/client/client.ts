@@ -4,9 +4,9 @@ import { log } from './log'
 import { NetClient } from './net/netClient'
 
 class Client implements IEntryPoint {
-  private net : NetClient
+  private net: NetClient
 
-  public run(argv : string[]) : void {
+  public run(argv: string[]): void {
     log('[picto] Client started')
     this.net = new NetClient(argv[0])
   }
