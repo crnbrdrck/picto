@@ -72,7 +72,7 @@ export class TransferChannel{
    */
   public isConnected() : boolean {
   // use websocket open state
-    return (this.ws.readyState === this.ws.OPEN)
+    return this.ws.readyState === this.ws.OPEN
   }
 
   /**
