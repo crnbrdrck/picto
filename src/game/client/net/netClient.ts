@@ -5,7 +5,6 @@ import { MessageType } from '../../shared/net/messageType'
 import { TransferChannel } from '../../shared/net/transferChannel'
 
 export class NetClient {
-
   private chl : TransferChannel
   private handlers : MessageHandlerArray
 

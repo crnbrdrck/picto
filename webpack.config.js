@@ -5,7 +5,7 @@ const server_dev =
 {
     mode: "development",
     target: "node",
-    entry: "./src/game/server/Server.ts",
+    entry: "./src/game/server/server.ts",
     devtool: "inline-source-map",
 
     module: 
@@ -27,7 +27,6 @@ const server_dev =
 
     output: 
     {
-        libraryTarget: "umd",
         filename: 'server.js',
         path: path.resolve(__dirname, 'build/')
     }
@@ -37,7 +36,7 @@ const client_dev =
 {
     mode: "development",
     target: "web",
-    entry: "./src/game/client/Client.ts",
+    entry: "./src/game/client/client.ts",
     devtool: "inline-source-map",
 
     module: 
@@ -60,7 +59,6 @@ const client_dev =
 
     output: 
     {
-        libraryTarget: "umd",
         filename: 'client.js',
         path: path.resolve(__dirname, 'build/static')
     },

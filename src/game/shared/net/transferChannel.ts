@@ -1,8 +1,11 @@
+import 'isomorphic-ws'
+
+import { log } from '../../shared/log'
 import { MessageContainer } from './messageContainer'
+import { BuildJSONFromMessage, BuildMessageFromJSON } from './messageFactories'
 import { MessageHandlerArray } from './messageHandlerArray'
 import { MessageType } from './messageType'
-import { BuildJSONFromMessage, BuildMessageFromJSON } from './messageFactories'
-import { log } from '../../shared/log'
+
 
 /**
  * A websocket transfer channel wraps a websocket
@@ -35,6 +38,7 @@ export class TransferChannel{
     ret.addWSEventHandlers()
     return ret
   }
+
   /**
    * An array of indexed by MessageEnum
    * An array of callbacks ("subscribers") which take this class as arg and the data recieved
@@ -68,7 +72,7 @@ export class TransferChannel{
    */
   public isConnected() : boolean {
   // use websocket open state
-    return (this.ws.readyState === WebSocket.OPEN)
+    return (this.ws.readyState === this.ws.OPEN)
   }
 
   /**
