@@ -97,7 +97,7 @@ const client_dev = {
     }),
 
     new CopyWebpackPlugin([{
-        from:"src/web/index.html", to:''
+        from:"src/game/client/web/index.html", to:''
       } 
     ]),
 
