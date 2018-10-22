@@ -94,7 +94,7 @@ export class Canvas {
       drag = this.drags[i]
       // Move to the previous spot (if there was one) and if we're in the middle of a move
       if (drag && i > 0) {
-        this.context.moveTo(this.clicks[i-1][0], this.clicks[i-1][1])
+        this.context.moveTo(this.clicks[i - 1][0], this.clicks[i - 1][1])
       }
       else {
         this.context.moveTo(click[0], click[1])
