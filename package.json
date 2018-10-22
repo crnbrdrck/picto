@@ -4,7 +4,7 @@
   "description": "like irc but with pictures :0",
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
+    "build": "npm run lint && webpack --mode production",
     "lint": "tslint 'src/**/*.ts'"
   },
   "repository": {
