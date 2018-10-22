@@ -34,8 +34,8 @@ export class Canvas {
     this.context = this.canvas.getContext('2d')
 
     // Set up the drawing vars
-    this.context.strokeStyle = '#f00'
-    this.context.lineWidth = 1
+    this.context.strokeStyle = '#000'
+    this.context.lineWidth = 5
     this.context.lineJoin = 'round'
 
     // Create event listeners for drawing
@@ -43,6 +43,15 @@ export class Canvas {
     this.canvas.addEventListener('mousemove', (e) => { this.mouseMove(e) }, false)
     this.canvas.addEventListener('mouseup', () => { this.stopPainting() }, false)
     this.canvas.addEventListener('mouseleave', () => { this.stopPainting() }, false)
+  }
+
+  public getImage() : string {
+    // Returns the image from the canvas and clears it (will be used for sending the message)
+    const data = this.canvas.toDataURL()  // Returns data url for png image
+    // Clear the arrays
+    this.clicks = []
+    this.drags = []
+    return data
   }
 
   private mouseDown(e : MouseEvent) {
@@ -72,9 +81,7 @@ export class Canvas {
 
   private draw() {
     // Handles updating the canvas with new drawing
-    console.log(this.context.strokeStyle)
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    this.context.fillRect(0, 0, 10, 10);
 
     // Draw the lines
     let click : number[]
@@ -87,19 +94,16 @@ export class Canvas {
       drag = this.drags[i]
       // Move to the previous spot (if there was one) and if we're in the middle of a move
       if (drag && i > 0) {
-        console.log('moving to', this.clicks[i-1])
         this.context.moveTo(this.clicks[i-1][0], this.clicks[i-1][1])
       }
       else {
-        console.log('moving to', click)
         this.context.moveTo(click[0], click[1])
       }
 
       // Draw a line to the current spot
-      console.log('drawing line to', click)
       this.context.lineTo(click[0], click[1])
       this.context.stroke()
-      // this.context.closePath()
+      this.context.closePath()
     }
   }
 }

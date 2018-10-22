@@ -12,9 +12,9 @@ class Client implements IEntryPoint {
   }
 }
 
-const gameClient = new Client()
-
-gameClient.run(['ws://localhost:8080'])
-
-// Create a canvas
+// Create a canvas (this will probably need to be given to the client to handle sending data)
 const canvas = new Canvas('picto-canvas')
+
+// Create a client to run the game with
+const gameClient = new Client()
+gameClient.run(['ws://localhost:8080'])
