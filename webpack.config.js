@@ -1,6 +1,8 @@
+
+const path = require('path')
 const CopyWebpackPlugin = require("copy-webpack-plugin")
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const path = require("path");
+const webpack = require('webpack')
 
 const server_dev = {
   mode: "development",
@@ -24,7 +26,15 @@ const server_dev = {
   output: {
     filename: 'server.js',
     path: path.resolve(__dirname, 'build/')
-  }
+  },
+
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development')
+      }
+    }),
+  ]
 };
 
 const client_dev = {
@@ -36,20 +46,42 @@ const client_dev = {
   module: {
     rules: [
       {
-          test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
+        options: {
+          appendTsSuffixTo: [/\.vue$/]
+        }
       },
 
       {
         test: /\.vue$/,
-        loader: 'vue-loader'
+        loader: 'vue-loader',
+      },
+
+      { // https://vue-loader.vuejs.org/guide/css-modules.html#usage
+        test: /\.css$/,
+        use: [
+          'vue-style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              // enable CSS Modules
+              modules: true,
+              // customize generated class names
+              localIdentName: '[local]_[hash:base64:8]'
+            }
+          }
+        ]
       }
     ]
   },
 
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ],
+    extensions: [ '.tsx', '.ts', '.js', '.vue', '.json'],
+    alias: {
+      'vue$': 'vue/dist/vue.esm.js'
+    }
   },
 
   output: {
@@ -58,8 +90,14 @@ const client_dev = {
   },
 
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('development')
+      }
+    }),
+
     new CopyWebpackPlugin([{
-        from:"src/web/",to:''
+        from:"src/web/index.html", to:''
       } 
     ]),
 
