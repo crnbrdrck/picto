@@ -1,0 +1,16 @@
+* {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body {
+    background-color: rgb(40, 38, 153);
+}
+
+canvas {
+    background-color: black;
+    width: 100vw;
+    height: 100vh;
+    cursor: crosshair;
+}
