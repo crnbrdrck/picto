@@ -1,6 +1,6 @@
 import { IEntryPoint } from 'game/shared/entryPoint'
 import { log } from './log'
-
+import { Canvas } from './canvas'
 import { NetClient } from './net/netClient'
 
 class Client implements IEntryPoint {
@@ -15,3 +15,6 @@ class Client implements IEntryPoint {
 const gameClient = new Client()
 
 gameClient.run(['ws://localhost:8080'])
+
+// Create a canvas
+const canvas = new Canvas('picto-canvas')
