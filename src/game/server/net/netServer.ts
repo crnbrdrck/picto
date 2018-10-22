@@ -15,6 +15,8 @@ export class NetServer {
   constructor(port : number) {
     this.wss = new Server({ port })
 
+    log('[netServer] listening on', port)
+
     this.connections = []
 
     // avoid scope issues

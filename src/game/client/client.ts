@@ -1,14 +1,18 @@
 import { IEntryPoint } from 'game/shared/entryPoint'
 import { log } from './log'
 
+import { VueApp } from '../../web/vueApp'
 import { NetClient } from './net/netClient'
 
 class Client implements IEntryPoint {
-  private net: NetClient
+  private vueApp: VueApp
+  private netClient: NetClient
 
   public run(argv: string[]): void {
     log('[picto] Client started')
-    this.net = new NetClient(argv[0])
+    
+    this.vueApp = new VueApp()
+    this.netClient = new NetClient(argv[0])
   }
 }
 
