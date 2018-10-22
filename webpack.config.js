@@ -1,75 +1,71 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin")
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const path = require("path");
 
-const server_dev =
-{
-    mode: "development",
-    target: "node",
-    entry: "./src/game/server/server.ts",
-    devtool: "inline-source-map",
-
-    module: 
-    {
-        rules:
-        [
-            {
-                test: /\.tsx?$/,
-                use: 'ts-loader',
-                exclude: /node_modules/
-            }
-        ]
-    },
-
-    resolve:
-    {
-        extensions: [ '.tsx', '.ts', '.js' ],
-    },
-
-    output: 
-    {
-        filename: 'server.js',
-        path: path.resolve(__dirname, 'build/')
-    }
-};
-
-const client_dev =
-{
-    mode: "development",
-    target: "web",
-    entry: "./src/game/client/client.ts",
-    devtool: "inline-source-map",
-
-    module: 
-    {
-        rules:
-        [
-            {
-                test: /\.tsx?$/,
-                use: 'ts-loader',
-                exclude: /node_modules/
-            }
-        ]
-    },
-
-    resolve:
-    {
-        extensions: [ '.tsx', '.ts', '.js' ],
-
-    },
-
-    output: 
-    {
-        filename: 'client.js',
-        path: path.resolve(__dirname, 'build/static')
-    },
-
-    plugins: 
-    [
-        new CopyWebpackPlugin([
-            {from:"src/web/",to:''} 
-        ]), 
+const server_dev = {
+  mode: "development",
+  target: "node",
+  entry: "./src/game/server/server.ts",
+  devtool: "inline-source-map",
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
+      }
     ]
+  },
+
+  resolve: {  
+    extensions: [ '.tsx', '.ts', '.js' ],
+  },
+
+  output: {
+    filename: 'server.js',
+    path: path.resolve(__dirname, 'build/')
+  }
 };
 
+const client_dev = {
+  mode: "development",
+  target: "web",
+  entry: "./src/game/client/client.ts",
+  devtool: "inline-source-map",
 
-module.exports = [server_dev,client_dev]
+  module: {
+    rules: [
+      {
+          test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
+      },
+
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      }
+    ]
+  },
+
+  resolve: {
+    extensions: [ '.tsx', '.ts', '.js' ],
+  },
+
+  output: {
+    filename: 'client.js',
+    path: path.resolve(__dirname, 'build/static')
+  },
+
+  plugins: [
+    new CopyWebpackPlugin([{
+        from:"src/web/",to:''
+      } 
+    ]),
+
+    new VueLoaderPlugin()
+  ]
+};  
+
+
+module.exports = [server_dev, client_dev]
