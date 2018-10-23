@@ -45,10 +45,17 @@ export class Canvas {
     this.canvas.addEventListener('mouseup', () => { this.stopPainting() }, false)
     this.canvas.addEventListener('mouseleave', () => { this.stopPainting() }, false)
 
-    // Create a listener for the buttons (temporary, just to test)
-    // Not sure what the best way of hooking the buttons into Vue is, but we can fix that later
-    document.querySelector('#send-btn')!.addEventListener('click', () => { console.log(this.getImage()) }, false)
-    document.querySelector('#clear-btn')!.addEventListener('click', () => { this.clear() }, false)
+    // Listen for the clear event to clear data
+    this.canvas.addEventListener('clear-canvas', () => { this.clear() }, false)
+  }
+
+  private clear() {
+    // Delete data from the arrays
+    this.clicks = []
+    this.drags = []
+
+    // Clear the canvas
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
   }
 
   private resize() {
@@ -56,22 +63,6 @@ export class Canvas {
     const style = getComputedStyle(this.canvas)
     this.canvas.height = +(style.height.split('px')[0])
     this.canvas.width = +(style.width.split('px')[0])
-  }
-
-  public getImage() : string {
-    // Returns the image from the canvas and clears it (will be used for sending the message)
-    const data = this.canvas.toDataURL()  // Returns data url for png image
-    this.clear()
-    return data
-  }
-
-  public clear() {
-    // Remove everything from the canvas
-    // Clear the arrays
-    this.clicks = []
-    this.drags = []
-    // Clear what's drawn
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
   }
 
   private mouseDown(e : MouseEvent) {

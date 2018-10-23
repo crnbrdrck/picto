@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import BaseComponent from  './components/baseComponent.vue'
 
-export class VueApp{
+export class VueApp {
   private vue: Vue
 
   constructor() {
