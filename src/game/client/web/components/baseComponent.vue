@@ -7,8 +7,8 @@
     <section id="message-box"></section>
 
     <section id="divider">
-      <button>Send</button>
-      <button>Clear</button>
+      <button id="send-btn">Send</button>
+      <button id="clear-btn">Clear</button>
     </section>
 
     <canvas id="picto-canvas">

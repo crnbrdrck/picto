@@ -44,6 +44,11 @@ export class Canvas {
     this.canvas.addEventListener('mousemove', (e) => { this.mouseMove(e) }, false)
     this.canvas.addEventListener('mouseup', () => { this.stopPainting() }, false)
     this.canvas.addEventListener('mouseleave', () => { this.stopPainting() }, false)
+
+    // Create a listener for the buttons (temporary, just to test)
+    // Not sure what the best way of hooking the buttons into Vue is, but we can fix that later
+    document.querySelector('#send-btn')!.addEventListener('click', () => { console.log(this.getImage()) }, false)
+    document.querySelector('#clear-btn')!.addEventListener('click', () => { this.clear() }, false)
   }
 
   private resize() {
