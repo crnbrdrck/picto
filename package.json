@@ -4,9 +4,9 @@
   "description": "like irc but with pictures :0",
   "main": "index.js",
   "scripts": {
-    "build": "npm run vuetype && webpack --mode production",
+    "build": "npm run lint && npm run vuetype && webpack --mode production",
     "lint": "tslint 'src/**/*.ts'",
-    "vuetype": "vuetype src/game/client/web/components"
+    "vuetype": "npx vuetype src/game/client/web/components"
   },
   "repository": {
     "type": "git",
