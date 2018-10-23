@@ -10,9 +10,13 @@
 }
 
 #divider {
-    height: 5vh;
+    height: 4vh;
     width: 100vw;
-    background-color: red;
+    border-top: 0.5vh solid black;
+    border-bottom: 0.5vh solid black;
+    display: flex;
+    align-content: center;
+    justify-content: center;
 }
 
 canvas {

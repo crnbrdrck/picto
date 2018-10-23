@@ -6,7 +6,10 @@
 
     <section id="message-box"></section>
 
-    <section id="divider"></section>
+    <section id="divider">
+      <button>Send</button>
+      <button>Clear</button>
+    </section>
 
     <canvas id="picto-canvas">
       <strong>Your browser does not support HTML5 Canvas</strong>
