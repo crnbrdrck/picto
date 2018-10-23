@@ -23,6 +23,9 @@
   import MessageComponent from './messageComponent.vue'
   import { MessageType } from '../../../shared/net/messageType'
 
+  /* TODO - Only add messages if received from the Server
+   * All messages should be sent through the server first to prevent message states being out of sync
+   */
   export default Vue.component('base-component', {
     components: {
       CanvasComponent,
@@ -35,10 +38,14 @@
       while (username === null || username === '') {
         username = prompt('Please enter a username!')
       }
-      // Send a connect message via the client
+      // TODO - Send a connect message via the client
       this.messages.push({type: MessageType.Connect, username})
       // Save the username
       this.username = username
+
+      // Add an event listener to send a disconnect message before leaving
+      window.addEventListener('beforeunload', (e) => { this.beforeQuit(e) }, false)
+      window.addEventListener('unload', (e) => { this.quit(e) }, false)
     },
 
     data() {
@@ -50,14 +57,26 @@
 
     methods: {
       // Have to use function since arrow functions will break the `this` context /shrug
-      sendMessage: function() {
-        // Use the canvas' message send method to get the data
-        const image = this.$refs.canvas.getImage()
-        this.messages.push({type: MessageType.SendPictoToClient, username: this.username, time: new Date(), image})
+      beforeQuit: function(e : Event) {
+        e.preventDefault()
+        e.returnValue = false
       },
 
       clearCanvas: function() {
         this.$refs.canvas.clear()
+      },
+
+      quit: function(e : Event) {
+        // TODO - Send message to server
+        this.messages.push({type: MessageType.Disconnect, username: this.username})
+        console.log({type: MessageType.Disconnect, username: this.username})
+      },
+
+      sendMessage: function() {
+        // Use the canvas' message send method to get the data
+        const image = this.$refs.canvas.getImage()
+        // TODO - Send message through the Client
+        this.messages.push({type: MessageType.SendPictoToClient, username: this.username, time: new Date(), image})
       }
     },
 
