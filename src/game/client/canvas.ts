@@ -56,10 +56,17 @@ export class Canvas {
   public getImage() : string {
     // Returns the image from the canvas and clears it (will be used for sending the message)
     const data = this.canvas.toDataURL()  // Returns data url for png image
+    this.clear()
+    return data
+  }
+
+  public clear() {
+    // Remove everything from the canvas
     // Clear the arrays
     this.clicks = []
     this.drags = []
-    return data
+    // Clear what's drawn
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
   }
 
   private mouseDown(e : MouseEvent) {
