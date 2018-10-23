@@ -4,7 +4,12 @@
       <section>Your browser has not enabled JavaScript, please enable it to play.</section>
     </noscript>
 
-    <section id="message-box"></section>
+    <section id="message-box">
+      <div v-for="msg in messages" class="message">
+        <p>Sent by {{ msg.username }} @ {{ msg.time }}</p>
+        <img :src="msg.image" />
+      </div>
+    </section>
 
     <section id="divider">
       <button id="send-btn">Send</button>
@@ -25,7 +30,9 @@
     name:"base-component",
 
     data() {
-      return { }
+      return {
+        messages: []
+      }
     },
 
     components: {

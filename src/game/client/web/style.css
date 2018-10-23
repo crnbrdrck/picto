@@ -9,6 +9,30 @@
     height: 47.5vh;
 }
 
+#message-box {
+    overflow-y: auto;
+}
+
+.message {
+    width: 95vw;
+    display: block;
+    margin: auto;
+    border: 1px solid blue;
+}
+
+.message:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+.message p {
+    display: block;
+    text-align: center;
+}
+
+.message img {
+    width: 100%;
+}
+
 #divider {
     height: 4vh;
     width: 100vw;
