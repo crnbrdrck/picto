@@ -1,6 +1,5 @@
-
 import Vue from 'vue'
-import BaseComponent from  './components/BaseComponent.vue'
+import BaseComponent from  './components/baseComponent.vue'
 
 export class VueApp{
   private vue: Vue
@@ -8,7 +7,7 @@ export class VueApp{
   constructor() {
     this.vue = new Vue({
       el: '#app',
-      template: 
+      template:
       `
         <base-component></base-component>
       `,

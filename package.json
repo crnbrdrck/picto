@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm run lint && npm run vuetype && webpack --mode production",
     "lint": "tslint 'src/**/*.ts'",
-    "vuetype": "npx vuetype src/game/client/web/components"
+    "vuetype": "npx vuetype src/game/client/web/components && sed -i 's/;//' src/game/client/web/components/*.d.ts"
   },
   "repository": {
     "type": "git",

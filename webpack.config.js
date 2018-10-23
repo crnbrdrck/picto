@@ -19,7 +19,7 @@ const server_dev = {
     ]
   },
 
-  resolve: {  
+  resolve: {
     extensions: [ '.tsx', '.ts', '.js' ],
   },
 
@@ -98,12 +98,17 @@ const client_dev = {
 
     new CopyWebpackPlugin([{
         from:"src/game/client/web/index.html", to:''
-      } 
+      }
+    ]),
+
+    new CopyWebpackPlugin([{
+        from:"src/game/client/web/style.css", to:''
+      }
     ]),
 
     new VueLoaderPlugin()
   ]
-};  
+};
 
 
 module.exports = [server_dev, client_dev]
