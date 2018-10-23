@@ -5,7 +5,7 @@
     </noscript>
 
     <section id="message-box">
-      <message-component v-for="msg in messages" v-bind:user="msg.username" v-bind:time="msg.time" v-bind:image="msg.image"></message-component>
+      <message-component v-for="msg in messages" v-bind:user="msg.username" v-bind:type="msg.type" v-bind:time="msg.time" v-bind:image="msg.image"></message-component>
     </section>
 
     <section id="divider">
@@ -21,6 +21,7 @@
   import Vue, {VueConstructor} from 'vue'
   import CanvasComponent from './canvasComponent.vue'
   import MessageComponent from './messageComponent.vue'
+  import { MessageType } from '../../../shared/net/messageType'
 
   export default Vue.component('base-component', {
     components: {
@@ -28,9 +29,22 @@
       MessageComponent,
     },
 
+    created() {
+      // When the component is created, prompt the user for a username
+      let username : string | null = ''
+      while (username === null || username === '') {
+        username = prompt('Please enter a username!')
+      }
+      // Send a connect message via the client
+      this.messages.push({type: MessageType.Connect, username})
+      // Save the username
+      this.username = username
+    },
+
     data() {
       return {
-        messages: []
+        messages: [],
+        username: ''
       }
     },
 
@@ -39,13 +53,15 @@
       sendMessage: function() {
         // Use the canvas' message send method to get the data
         const image = this.$refs.canvas.getImage()
-        this.messages.push({username: 'me', time: new Date(), image})
+        this.messages.push({type: MessageType.SendPictoToClient, username: this.username, time: new Date(), image})
       },
 
       clearCanvas: function() {
         this.$refs.canvas.clear()
       }
     },
+
+    props: ['client'],
 
     updated: function() {
       // Method called whenever ths component is updated, use to scroll the chat to the bottom
