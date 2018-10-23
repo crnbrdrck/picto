@@ -27,11 +27,12 @@ export class Canvas {
 
     // Get the canvas and the context
     this.canvas = document.getElementById(elementId) as HTMLCanvasElement
-    // Set the canvas height and width to be the computed height and width
-    const style = getComputedStyle(this.canvas)
-    this.canvas.height = +(style.height.split('px')[0])
-    this.canvas.width = +(style.width.split('px')[0])
     this.context = this.canvas.getContext('2d')
+
+    // Set the canvas height and width to be the computed height and width
+    this.resize()
+    // Set resize to happen on window resizing
+    window.addEventListener('resize', () => { this.resize() }, false)
 
     // Set up the drawing vars
     this.context.strokeStyle = '#000'
@@ -43,6 +44,13 @@ export class Canvas {
     this.canvas.addEventListener('mousemove', (e) => { this.mouseMove(e) }, false)
     this.canvas.addEventListener('mouseup', () => { this.stopPainting() }, false)
     this.canvas.addEventListener('mouseleave', () => { this.stopPainting() }, false)
+  }
+
+  private resize() {
+    // Resize the canvas object using the computed style, since we use vh/vw
+    const style = getComputedStyle(this.canvas)
+    this.canvas.height = +(style.height.split('px')[0])
+    this.canvas.width = +(style.width.split('px')[0])
   }
 
   public getImage() : string {
