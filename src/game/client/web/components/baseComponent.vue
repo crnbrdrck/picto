@@ -4,12 +4,14 @@
       <section>Your browser has not enabled JavaScript, please enable it to play.</section>
     </noscript>
 
-    <section>
-      <canvas id="picto-canvas">
-        <strong>Your browser does not support HTML5 Canvas</strong>
-        <a href="https://caniuse.com/canvas">Click here to view a list of browsers which support the canvas element</a>
-      </canvas>
-    </section>
+    <section id="message-box"></section>
+
+    <section id="divider"></section>
+
+    <canvas id="picto-canvas">
+      <strong>Your browser does not support HTML5 Canvas</strong>
+      <a href="https://caniuse.com/canvas">Click here to view a list of browsers which support the canvas element</a>
+    </canvas>
   </main>
 </template>
 
